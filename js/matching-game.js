@@ -1,77 +1,7 @@
 // Reusable "matching game" exercise widget.
 // Usage: call initMatchingGame(containerId, pairs, roundSize) where
 // pairs is an array of { glyph, roman } objects to draw rounds from.
-
-// ---- Sound effects, synthesized with the Web Audio API (no audio files needed) ----
-var DzongkhaSounds = (function () {
-  let ctx;
-  function getCtx() {
-    if (!ctx) {
-      ctx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (ctx.state === "suspended") ctx.resume();
-    return ctx;
-  }
-
-  function isMuted() {
-    return localStorage.getItem("dzongkha_sound_muted") === "1";
-  }
-
-  function setMuted(muted) {
-    localStorage.setItem("dzongkha_sound_muted", muted ? "1" : "0");
-  }
-
-  function playCorrect() {
-    if (isMuted()) return;
-    const c = getCtx();
-    const duration = 0.15;
-    const bufferSize = Math.floor(c.sampleRate * duration);
-    const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
-    }
-    const noise = c.createBufferSource();
-    noise.buffer = buffer;
-
-    const bandpass = c.createBiquadFilter();
-    bandpass.type = "bandpass";
-    bandpass.frequency.value = 2200;
-    bandpass.Q.value = 0.8;
-
-    const gain = c.createGain();
-    gain.gain.setValueAtTime(0.9, c.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, c.currentTime + duration);
-
-    noise.connect(bandpass).connect(gain).connect(c.destination);
-    noise.start();
-    noise.stop(c.currentTime + duration);
-  }
-
-  function playWrong() {
-    if (isMuted()) return;
-    const c = getCtx();
-    const osc = c.createOscillator();
-    const gain = c.createGain();
-    osc.type = "square";
-    osc.frequency.setValueAtTime(180, c.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(90, c.currentTime + 0.25);
-    gain.gain.setValueAtTime(0.12, c.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.25);
-    osc.connect(gain).connect(c.destination);
-    osc.start();
-    osc.stop(c.currentTime + 0.25);
-  }
-
-  function playComplete() {
-    if (isMuted()) return;
-    // Two quick ascending "claps" for a small celebratory flourish.
-    playCorrect();
-    setTimeout(playCorrect, 140);
-  }
-
-  return { playCorrect, playWrong, playComplete, isMuted, setMuted };
-})();
+// Requires sounds.js to be loaded first (for DzongkhaSounds).
 
 function initMatchingGame(containerId, pairs, roundSize) {
   roundSize = roundSize || 6;

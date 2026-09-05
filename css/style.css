@@ -510,6 +510,96 @@ footer.site-footer {
 }
 .play-again-btn:hover { opacity: 0.9; }
 
+/* Stacking (drag-and-drop) game */
+.stack-progress {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+
+.drag-source-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.drag-source {
+  font-family: 'Jomolhari', serif;
+  font-size: 2.2rem;
+  color: var(--card);
+  background: var(--maroon);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 4px 4px 0 rgba(122, 31, 43, 0.2);
+  transition: transform 0.1s ease;
+}
+.drag-source.dragging { opacity: 0.4; }
+.drag-source:active { cursor: grabbing; }
+
+.drag-ghost {
+  position: fixed;
+  z-index: 9999;
+  font-family: 'Jomolhari', serif;
+  font-size: 2.2rem;
+  color: var(--card);
+  background: var(--maroon);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.1) rotate(-6deg);
+  box-shadow: 6px 6px 0 rgba(122, 31, 43, 0.25);
+}
+
+.stack-board {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  max-width: 560px;
+}
+
+.stack-target {
+  font-family: 'Jomolhari', serif;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 14px 4px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--ink);
+  transition: all 0.15s ease;
+}
+.stack-target.drag-over {
+  border-color: var(--saffron);
+  border-width: 2px;
+  background: rgba(201, 138, 44, 0.1);
+}
+.stack-target.solved {
+  background: rgba(31, 74, 72, 0.1);
+  border-color: var(--teal);
+  color: var(--teal);
+  font-size: 1.2rem;
+}
+.stack-target.shake {
+  animation: shake 0.3s ease;
+  border-color: #b33;
+}
+
+@media (max-width: 600px) {
+  .stack-board { grid-template-columns: repeat(5, 1fr); }
+}
+
+
 @media (max-width: 600px) {
   h1 { font-size: 2.1rem; }
   .hero::before { font-size: 9rem; top: -30px; }

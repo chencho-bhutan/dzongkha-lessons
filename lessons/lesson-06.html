@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Read and Pronounce the Gochen — Learn Dzongkha</title>
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
 
@@ -51,8 +51,37 @@
     <p>For three specific base letters — <strong>ཀ, ཏ, and ཙ</strong> — the pronunciation stays exactly the same even when ར is stacked on top, exactly as described above.</p>
     <p style="border-left: 3px solid var(--saffron); padding-left: 16px; color: var(--ink-soft); font-style: italic;">However, for the <em>other</em> base letters in the Ra-go list, there's an additional detail about how the pronunciation changes that hasn't been fully confirmed yet. This section will be updated once that rule is confirmed.</p>
 
+    <div class="exercise-block">
+      <div id="gochenStackGame"></div>
+    </div>
+    <script src="../js/sounds.js?v=1"></script>
+    <script src="../js/stacking-game.js?v=1"></script>
+    <script>
+      initStackingGame("gochenStackGame");
+    </script>
+
     <div class="next-post">
       <p><strong>Next:</strong> <a href="lesson-07.html">The Three Dogchen — འདོགས་ཅན་གསུམ</a></p>
+    </div>
+    <div class="engagement-section">
+      <div id="likeSection"></div>
+      <script src="../js/engagement.js"></script>
+
+      <h2>Comments &amp; Questions</h2>
+      <div id="disqus_thread"></div>
+      <script>
+          var disqus_config = function () {
+              this.page.url = window.location.href;
+              this.page.identifier = window.location.pathname.split('/').pop().replace('.html', '');
+          };
+          (function() {
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YOUR-DISQUS-SHORTNAME.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </div>
 </main>
