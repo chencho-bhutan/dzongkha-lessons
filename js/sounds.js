@@ -8,8 +8,22 @@ var DzongkhaSounds = (function () {
     if (!ctx) {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
     }
-    if (ctx.state === "suspended") ctx.resume();
     return ctx;
+  }
+
+  // ctx.resume() is asynchronous — scheduling a sound immediately after
+  // calling it (without waiting) can cause the very first sound on a page
+  // to be silently dropped. This wrapper guarantees playback only happens
+  // once the context is confirmed running.
+  function whenRunning(callback) {
+    const c = getCtx();
+    if (c.state === "running") {
+      callback(c);
+    } else {
+      c.resume().then(function () {
+        callback(c);
+      });
+    }
   }
 
   function isMuted() {
@@ -20,8 +34,7 @@ var DzongkhaSounds = (function () {
     localStorage.setItem("dzongkha_sound_muted", muted ? "1" : "0");
   }
 
-  function playSingleClap(startTime, freqBase) {
-    const c = getCtx();
+  function playSingleClap(c, startTime, freqBase) {
     const duration = 0.07;
     const bufferSize = Math.floor(c.sampleRate * duration);
     const buffer = c.createBuffer(1, bufferSize, c.sampleRate);
@@ -54,38 +67,41 @@ var DzongkhaSounds = (function () {
 
   function playCorrect() {
     if (isMuted()) return;
-    const c = getCtx();
-    const now = c.currentTime;
-    // Two or three near-simultaneous claps read as a single crisp "clap" rather than a beep.
-    playSingleClap(now, 1800);
-    playSingleClap(now + 0.012, 2600);
-    playSingleClap(now + 0.02, 2100);
+    whenRunning(function (c) {
+      const now = c.currentTime;
+      // Two or three near-simultaneous claps read as a single crisp "clap" rather than a beep.
+      playSingleClap(c, now, 1800);
+      playSingleClap(c, now + 0.012, 2600);
+      playSingleClap(c, now + 0.02, 2100);
+    });
   }
 
   function playWrong() {
     if (isMuted()) return;
-    const c = getCtx();
-    const osc = c.createOscillator();
-    const gain = c.createGain();
-    osc.type = "square";
-    osc.frequency.setValueAtTime(180, c.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(90, c.currentTime + 0.25);
-    gain.gain.setValueAtTime(0.12, c.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.25);
-    osc.connect(gain).connect(c.destination);
-    osc.start();
-    osc.stop(c.currentTime + 0.25);
+    whenRunning(function (c) {
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(180, c.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(90, c.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.12, c.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.25);
+      osc.connect(gain).connect(c.destination);
+      osc.start();
+      osc.stop(c.currentTime + 0.25);
+    });
   }
 
   function playComplete() {
     if (isMuted()) return;
-    const c = getCtx();
-    let t = c.currentTime;
-    // A short round of applause: several claps at slightly randomized intervals.
-    for (let i = 0; i < 7; i++) {
-      playSingleClap(t, 1600 + Math.random() * 1600);
-      t += 0.08 + Math.random() * 0.07;
-    }
+    whenRunning(function (c) {
+      let t = c.currentTime;
+      // A short round of applause: several claps at slightly randomized intervals.
+      for (let i = 0; i < 7; i++) {
+        playSingleClap(c, t, 1600 + Math.random() * 1600);
+        t += 0.08 + Math.random() * 0.07;
+      }
+    });
   }
 
   return { playCorrect, playWrong, playComplete, isMuted, setMuted };
