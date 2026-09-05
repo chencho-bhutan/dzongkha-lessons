@@ -104,5 +104,36 @@ var DzongkhaSounds = (function () {
     });
   }
 
-  return { playCorrect, playWrong, playComplete, isMuted, setMuted };
+  function unlock() {
+    const c = getCtx();
+    if (c.state === "suspended") c.resume();
+    // iOS Safari sometimes needs an actual source node started (not just
+    // resume()) during the gesture to fully unlock audio. A near-silent,
+    // one-sample buffer does this without being audible.
+    try {
+      const buffer = c.createBuffer(1, 1, c.sampleRate);
+      const src = c.createBufferSource();
+      src.buffer = buffer;
+      src.connect(c.destination);
+      src.start(0);
+    } catch (e) {
+      // Ignore — if this fails, normal playback will still attempt to
+      // resume the context on the next real sound.
+    }
+  }
+
+  return { playCorrect, playWrong, playComplete, isMuted, setMuted, unlock };
+})();
+
+// Some mobile browsers only reliably "unlock" audio on a plain tap/click,
+// not on more complex gestures like a drag. Pre-warm the audio context on
+// the very first interaction anywhere on the page, so it's already running
+// by the time a game actually needs to play a sound.
+(function () {
+  function handleFirstInteraction() {
+    DzongkhaSounds.unlock();
+  }
+  ["pointerdown", "touchstart", "click"].forEach(function (evt) {
+    document.addEventListener(evt, handleFirstInteraction, { once: true, passive: true });
+  });
 })();
