@@ -55,9 +55,28 @@
       <div id="gochenStackGame"></div>
     </div>
     <script src="../js/sounds.js?v=2"></script>
-    <script src="../js/stacking-game.js?v=1"></script>
+    <script src="../js/stacking-game.js?v=2"></script>
     <script>
-      initStackingGame("gochenStackGame");
+      initStackingGame("gochenStackGame", [
+        {
+          letter: "ར",
+          name: "ra",
+          targets: ["ཀ","ག","ང","ཇ","ཉ","ཏ","ད","ན","བ","མ","ཙ","ཛ"],
+          combined: { "ཀ":"རྐ","ག":"རྒ","ང":"རྔ","ཇ":"རྗ","ཉ":"རྙ","ཏ":"རྟ","ད":"རྡ","ན":"རྣ","བ":"རྦ","མ":"རྨ","ཙ":"རྩ","ཛ":"རྫ" }
+        },
+        {
+          letter: "ལ",
+          name: "la",
+          targets: ["ཀ","ག","ང","ཅ","ཇ","ཏ","ད","པ","བ","ཧ"],
+          combined: { "ཀ":"ལྐ","ག":"ལྒ","ང":"ལྔ","ཅ":"ལྕ","ཇ":"ལྗ","ཏ":"ལྟ","ད":"ལྡ","པ":"ལྤ","བ":"ལྦ","ཧ":"ལྷ" }
+        },
+        {
+          letter: "ས",
+          name: "sa",
+          targets: ["ཀ","ག","ང","ཉ","ཏ","ད","ན","པ","བ","མ","ཙ"],
+          combined: { "ཀ":"སྐ","ག":"སྒ","ང":"སྔ","ཉ":"སྙ","ཏ":"སྟ","ད":"སྡ","ན":"སྣ","པ":"སྤ","བ":"སྦ","མ":"སྨ","ཙ":"སྩ" }
+        }
+      ], "on top of");
     </script>
 
     <div class="next-post">

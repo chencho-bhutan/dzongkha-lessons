@@ -1,33 +1,18 @@
-// Drag-and-drop "stacking" game: drag ra/la/sa onto every base letter
-// that legally accepts it as a Gochen (superscript). Uses Pointer Events
-// so it works on both mouse and touch. Requires sounds.js to be loaded first.
+// Drag-and-drop "stacking" game: drag a topper/attacher letter onto every
+// base letter that legally accepts it. Uses Pointer Events so it works on
+// both mouse and touch. Requires sounds.js to be loaded first.
+//
+// Usage: initStackingGame(containerId, rounds, positionLabel)
+//   rounds: array of { letter, name, targets: [...], combined: {base: combinedGlyph} }
+//   positionLabel: e.g. "on top of" (Gochen) or "underneath" (Dogchen)
 
-function initStackingGame(containerId) {
+function initStackingGame(containerId, rounds, positionLabel) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
+  positionLabel = positionLabel || "on top of";
   const ALL_30 = ["ཀ","ཁ","ག","ང","ཅ","ཆ","ཇ","ཉ","ཏ","ཐ","ད","ན","པ","ཕ","བ","མ","ཙ","ཚ","ཛ","ཝ","ཞ","ཟ","འ","ཡ","ར","ལ","ཤ","ས","ཧ","ཨ"];
-
-  const ROUNDS = [
-    {
-      letter: "ར",
-      name: "ra",
-      targets: ["ཀ","ག","ང","ཇ","ཉ","ཏ","ད","ན","བ","མ","ཙ","ཛ"],
-      combined: { "ཀ":"རྐ","ག":"རྒ","ང":"རྔ","ཇ":"རྗ","ཉ":"རྙ","ཏ":"རྟ","ད":"རྡ","ན":"རྣ","བ":"རྦ","མ":"རྨ","ཙ":"རྩ","ཛ":"རྫ" }
-    },
-    {
-      letter: "ལ",
-      name: "la",
-      targets: ["ཀ","ག","ང","ཅ","ཇ","ཏ","ད","པ","བ","ཧ"],
-      combined: { "ཀ":"ལྐ","ག":"ལྒ","ང":"ལྔ","ཅ":"ལྕ","ཇ":"ལྗ","ཏ":"ལྟ","ད":"ལྡ","པ":"ལྤ","བ":"ལྦ","ཧ":"ལྷ" }
-    },
-    {
-      letter: "ས",
-      name: "sa",
-      targets: ["ཀ","ག","ང","ཉ","ཏ","ད","ན","པ","བ","མ","ཙ"],
-      combined: { "ཀ":"སྐ","ག":"སྒ","ང":"སྔ","ཉ":"སྙ","ཏ":"སྟ","ད":"སྡ","ན":"སྣ","པ":"སྤ","བ":"སྦ","མ":"སྨ","ཙ":"སྩ" }
-    }
-  ];
+  const ROUNDS = rounds;
 
   let roundIndex = 0;
   let score = 0;
@@ -44,7 +29,7 @@ function initStackingGame(containerId) {
         '<h2 style="margin:0;">Round ' + (roundIndex + 1) + ' of ' + ROUNDS.length + ': Stack ' + round.letter + '</h2>' +
         '<span class="exercise-score">⭐ Score: <span id="' + containerId + '-score">' + score + '</span></span>' +
       "</div>" +
-      '<p class="exercise-instructions">Drag <strong>' + round.letter + '</strong> onto every letter it can sit on top of. There are <strong>' + round.targets.length + '</strong> correct letters on the board.</p>' +
+      '<p class="exercise-instructions">Drag <strong>' + round.letter + '</strong> ' + positionLabel + ' every letter it can attach to. There are <strong>' + round.targets.length + '</strong> correct letters on the board.</p>' +
       '<div class="stack-progress">Found: <span id="' + containerId + '-found">0</span> / ' + round.targets.length + '</div>' +
       '<div class="drag-source-row"><div class="drag-source" id="' + containerId + '-source">' + round.letter + '</div></div>' +
       '<div class="stack-board" id="' + containerId + '-board"></div>' +

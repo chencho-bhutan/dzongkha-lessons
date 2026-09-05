@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Read and Pronounce the Dogchen — Learn Dzongkha</title>
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
 
@@ -72,8 +72,56 @@
     </ol>
     <p>If any of these still feel shaky, it's worth another pass through the earlier lessons in this chapter before continuing — everything from here on builds directly on top of these building blocks.</p>
 
+    <div class="exercise-block">
+      <div id="dogchenStackGame"></div>
+    </div>
+    <script src="../js/sounds.js?v=2"></script>
+    <script src="../js/stacking-game.js?v=2"></script>
+    <script>
+      initStackingGame("dogchenStackGame", [
+        {
+          letter: "ཡ",
+          name: "ya",
+          targets: ["ཀ","ཁ","ག","པ","ཕ","བ","མ"],
+          combined: { "ཀ":"ཀྱ","ཁ":"ཁྱ","ག":"གྱ","པ":"པྱ","ཕ":"ཕྱ","བ":"བྱ","མ":"མྱ" }
+        },
+        {
+          letter: "ར",
+          name: "ra",
+          targets: ["ཀ","ཁ","ག","ཏ","ཐ","ད","ན","པ","ཕ","བ","མ","ཤ","ས","ཧ"],
+          combined: { "ཀ":"ཀྲ","ཁ":"ཁྲ","ག":"གྲ","ཏ":"ཏྲ","ཐ":"ཐྲ","ད":"དྲ","ན":"ནྲ","པ":"པྲ","ཕ":"ཕྲ","བ":"བྲ","མ":"མྲ","ཤ":"ཤྲ","ས":"སྲ","ཧ":"ཧྲ" }
+        },
+        {
+          letter: "ལ",
+          name: "la",
+          targets: ["ཀ","ག","བ","ཟ","ར","ས"],
+          combined: { "ཀ":"ཀླ","ག":"གླ","བ":"བླ","ཟ":"ཟླ","ར":"རླ","ས":"སླ" }
+        }
+      ], "underneath");
+    </script>
+
     <div class="next-post">
       <p><strong>Next:</strong> <a href="lesson-09.html">Identifying སྔོན་འཇུག, མིང་གཞི, རྗེས་འཇུག, and ཡང་འཇུག</a></p>
+    </div>
+    <div class="engagement-section">
+      <div id="likeSection"></div>
+      <script src="../js/engagement.js"></script>
+
+      <h2>Comments &amp; Questions</h2>
+      <div id="disqus_thread"></div>
+      <script>
+          var disqus_config = function () {
+              this.page.url = window.location.href;
+              this.page.identifier = window.location.pathname.split('/').pop().replace('.html', '');
+          };
+          (function() {
+              var d = document, s = d.createElement('script');
+              s.src = 'https://YOUR-DISQUS-SHORTNAME.disqus.com/embed.js';
+              s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
   </div>
 </main>
